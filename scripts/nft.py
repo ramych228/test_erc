@@ -1,5 +1,4 @@
 from brownie import accounts, NFT
-from web3 import Web3
 
 
 def deploy_token():
