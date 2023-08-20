@@ -3,14 +3,15 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract NFT is ERC721, Ownable {
+contract NFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private tokenIdCounter;
-    mapping (address => uint) tokensAmount;
+    mapping(address => uint) tokensAmount;
     uint public maxTotalSupply;
     uint public constant mintingFee = 1e15 wei;
     address private withdrawalReceiver;
@@ -34,11 +35,23 @@ contract NFT is ERC721, Ownable {
 
         for (uint i = 0; i < _amount; i++) {
             _safeMint(msg.sender, tokenIdCounter.current());
+            _setTokenURI(tokenIdCounter.current(), tokenURI(tokenIdCounter.current()));
             tokenIdCounter.increment();
         }
     }
 
+    function tokenURI(uint256 _tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+        return string.concat(
+            _baseURI(),
+            Strings.toString(_tokenId)
+        );
+    }
+
     function withdraw() public onlyOwner {
         payable(withdrawalReceiver).transfer(address(this).balance);
+    }
+
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
     }
 }

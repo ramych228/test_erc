@@ -3,7 +3,8 @@ from brownie import accounts, NFT
 
 def deploy_token():
     max_total_supply = 100
-    my_token = NFT.deploy(100, accounts[0], {"from": accounts[0]})
+    account_main = accounts.load(2)
+    my_token = NFT.deploy(max_total_supply, account_main, {"from": account_main}, publish_source=True)
 
     return my_token
 
@@ -15,9 +16,6 @@ def get_token_balance(account_address):
 
 def main():
     deploy_token()
-    get_token_balance(accounts[0].address)
-    get_token_balance(accounts[1].address)
-    get_token_balance(accounts[2].address)
 
 
 main()

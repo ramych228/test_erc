@@ -1,6 +1,4 @@
 import pytest
-from brownie import NFT
-
 
 
 @pytest.mark.parametrize("idx", range(6))
