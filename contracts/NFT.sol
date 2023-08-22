@@ -11,9 +11,8 @@ contract NFT is ERC721, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private tokenIdCounter;
-    mapping(address => uint) tokensAmount;
     uint public maxTotalSupply;
-    uint public constant mintingFee = 1e15 wei;
+    uint public constant mintingFee = 0.001 ether ;
     address private withdrawalReceiver;
 
     constructor(uint _maxTotalSupply, address _withdrawalReceiver) ERC721("NFToken", "NFT") public {
@@ -27,11 +26,9 @@ contract NFT is ERC721, ERC721URIStorage, Ownable {
 
     function mint(uint8 _amount) public payable {
         require(_amount <= 3, "NFT: User can't mint more than 3 tokens in one mint");
-        require(tokensAmount[msg.sender] + _amount <= 6, "NFT: User can't have more than 6 tokens");
+        require(balanceOf(msg.sender) + _amount <= 6, "NFT: User can't have more than 6 tokens");
         require(msg.value == mintingFee * _amount, "NFT: User must pay exact 0.001 ether for one token minting");
         require(tokenIdCounter.current() + _amount <= maxTotalSupply, "NFT: Users can't mint more than maximum total supply");
-
-        tokensAmount[msg.sender] += _amount;
 
         for (uint i = 0; i < _amount; i++) {
             _safeMint(msg.sender, tokenIdCounter.current());

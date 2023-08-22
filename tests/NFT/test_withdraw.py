@@ -1,9 +1,14 @@
+import brownie
 import pytest
 
 
-@pytest.mark.parametrize("idx", range(2))
-def test_ownership(nft, accounts, idx):
-    assert nft.withdraw({"from": accounts[idx]})
+def test_ownership(nft, accounts):
+    assert nft.withdraw({"from": accounts[0]})
+
+
+def test_exception_ownership(nft, accounts):
+    with brownie.reverts("Ownable: caller is not the owner"):
+        nft.withdraw({"from": accounts[2]})
 
 
 def test_withdraw(nft, accounts):
@@ -12,5 +17,3 @@ def test_withdraw(nft, accounts):
     contract_balance = nft.balance()
     nft.withdraw({"from": accounts[0]})
     assert accounts[0].balance() - account_start_balance == contract_balance
-
-
