@@ -16,7 +16,7 @@ async function main() {
     const ProxyF = await ethers.getContractFactory("Proxy");
     const attachedProxy = ProxyF.attach(process.env.PROXY_ADDRESS as string) as Proxy;
 
-    let tokensAmount = ethers.parseEther("0.000001");
+    let tokensAmount = 100000;
     let refundAddress = ownerAddress;
     let zroPaymentAddress = ethers.ZeroAddress;
     let adapterParams = ethers.solidityPacked(["uint16", "uint256"], [1, 200000])
@@ -33,6 +33,12 @@ async function main() {
     console.log("The owner balance: " + ethers.formatEther(await ethers.provider.getBalance(ownerAddress)));
 
     attachedToken.approve(process.env.PROXY_ADDRESS as string, fees[0], {from: ownerAddress});
+
+    const accountNonce = await owner.getNonce() + 1;
+
+  
+  
+
     await attachedProxy.sendFrom(
       ownerAddress, 
       MOONBEAM_CHAINID, 
@@ -41,7 +47,7 @@ async function main() {
       refundAddress, 
       zroPaymentAddress, 
       "0x", 
-      {value: fees[0], from: owner}
+      {value: fees[0], from: owner, nonce: accountNonce}
     );
 }
 

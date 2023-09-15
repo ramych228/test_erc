@@ -15,7 +15,7 @@ async function main() {
     const attachedOFT = OFT.attach(process.env.OFT_ADDRESS as string) as TokenOFT;
 
 
-    let tokensAmount = ethers.parseEther("0.000001");
+    let tokensAmount = 100000;
     let refundAddress = ownerAddress;
     let zroPaymentAddress = ethers.ZeroAddress;
     let adapterParams = ethers.solidityPacked(["uint16", "uint256"], [1, 200000])
