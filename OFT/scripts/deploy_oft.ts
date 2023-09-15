@@ -5,7 +5,7 @@ import "hardhat-change-network";
 import "dotenv/config";
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
-import { ARBITRUM_GOERLI_ENDPOINT } from '../hardhat.config'
+import { MOONBEAM_ENDPOINT } from '../hardhat.config'
 
 
 async function main() {
@@ -23,7 +23,7 @@ async function main() {
     console.log("Deploying contract with the account:", await owner.getAddress());
 
     const TokenOFT = await ethers.getContractFactory("TokenOFT");
-    const deployedTokenOFT = await TokenOFT.deploy("TokenOFT", "TOFT", ARBITRUM_GOERLI_ENDPOINT);
+    const deployedTokenOFT = await TokenOFT.deploy("TokenOFT", "TOFT", MOONBEAM_ENDPOINT);
 
     console.log(`Deployed OFT contract on:`, await deployedTokenOFT.getAddress());
 

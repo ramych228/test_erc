@@ -5,7 +5,7 @@ import "hardhat-change-network";
 import "dotenv/config";
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
-import { SEPOLIA_ENDPOINT } from '../hardhat.config'
+import { ARBITRUM_ENDPOINT } from '../hardhat.config'
 
 async function main() {
   await hardhat.run("compile");
@@ -42,7 +42,7 @@ async function main() {
   console.log("Deploying contract on this network:", owner.provider);
 
   const Proxy = await ethers.getContractFactory("Proxy");
-  const deployedProxy = await Proxy.deploy("Proxy", SEPOLIA_ENDPOINT, await deployedToken.getAddress());
+  const deployedProxy = await Proxy.deploy("Proxy", ARBITRUM_ENDPOINT, await deployedToken.getAddress());
 
   console.log(`Deployed Proxy contract on:`, await deployedProxy.getAddress());
 
